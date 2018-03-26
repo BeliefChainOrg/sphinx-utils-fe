@@ -1,3 +1,3 @@
 import dataAnalysts from './data-analysts'
 
-export default {dataAnalysts}
+module.exports = dataAnalysts
