@@ -1,10 +1,10 @@
 const mixpanel = window.mixpanel
-const intercom = window.intercom
+const intercom = window.Intercom
 
 const isOpenDataAnalyst = () => window.sphinxConfig && window.sphinxConfig.openDataAnalyst
 
 const dataAnalysts = {
-  regNewUser: (uid, name, email, phone) => {
+  regNewUser: (uid, name = '', email = '', phone = '') => {
     if (!isOpenDataAnalyst()) return
 
     mixpanel.alias(uid)
@@ -14,20 +14,20 @@ const dataAnalysts = {
       $email: email,
       $name: name,
       $phone: phone,
-      Phone: this.props.email
+      Phone: phone
     })
 
     mixpanel.identify(uid)
 
     mixpanel.register({
       uid,
-      email: this.props.email
+      email
     })
 
     intercom('boot', {
-      app_id: `poh1d9m6`,
-      name: this.nickname,
-      email: this.props.email,
+      app_id: 'poh1d9m6',
+      name,
+      email,
       user_id: uid,
       phone
     })
@@ -35,18 +35,19 @@ const dataAnalysts = {
     intercom('trackEvent', 'reg')
   },
 
-  loginUser: (uid, name, email, phone) => {
+  loginUser: (uid, email = '', phone = '') => {
     if (!isOpenDataAnalyst()) return
 
     mixpanel.identify(uid)
 
     mixpanel.register({
       uid,
-      email: email
+      email,
+      phone
     })
 
     intercom('boot', {
-      app_id: `poh1d9m6`,
+      app_id: 'poh1d9m6',
       email,
       user_id: uid,
       phone
@@ -55,22 +56,20 @@ const dataAnalysts = {
     intercom('trackEvent', 'login')
   },
 
-  trackEvent: (eventStr, propertyObj, isSendAll) => {
+  trackEvent: (eventStr, propertyObj = {}, isSendAll = false) => {
     if (!isOpenDataAnalyst()) return
 
-    const sendObj = propertyObj || {}
-
-    mixpanel.track(eventStr, sendObj)
+    mixpanel.track(eventStr, propertyObj)
 
     if (isSendAll) {
-      intercom('trackEvent', eventStr, sendObj)
+      intercom('trackEvent', eventStr, propertyObj)
     }
   },
 
-  trackLink: (tagIdStr, eventStr, propertyObj) => {
+  trackLink: (tagIdStr, eventStr, propertyObj = {}) => {
     if (!isOpenDataAnalyst()) return
 
-    mixpanel.track_links(tagIdStr, eventStr, propertyObj || {})
+    mixpanel.track_links(tagIdStr, eventStr, propertyObj)
   }
 }
 
