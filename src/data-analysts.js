@@ -5,7 +5,7 @@ const isOpenDataAnalyst = () => window.sphinxConfig && window.sphinxConfig.openD
 
 const dataAnalysts = {
   regNewUser: (uid, name, email, phone) => {
-    if (!isOpenDataAnalyst) return
+    if (!isOpenDataAnalyst()) return
 
     mixpanel.alias(uid)
 
@@ -36,7 +36,7 @@ const dataAnalysts = {
   },
 
   loginUser: (uid, name, email, phone) => {
-    if (!isOpenDataAnalyst) return
+    if (!isOpenDataAnalyst()) return
 
     mixpanel.identify(uid)
 
@@ -56,7 +56,7 @@ const dataAnalysts = {
   },
 
   trackEvent: (eventStr, propertyObj, isSendAll) => {
-    if (!isOpenDataAnalyst) return
+    if (!isOpenDataAnalyst()) return
 
     const sendObj = propertyObj || {}
 
@@ -68,7 +68,7 @@ const dataAnalysts = {
   },
 
   trackLink: (tagIdStr, eventStr, propertyObj) => {
-    if (!isOpenDataAnalyst) return
+    if (!isOpenDataAnalyst()) return
 
     mixpanel.track_links(tagIdStr, eventStr, propertyObj || {})
   }
