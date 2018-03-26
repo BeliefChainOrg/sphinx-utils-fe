@@ -1,15 +1,29 @@
-const mixpanel = window.mixpanel
-const intercom = window.Intercom
+class DataAnalysts {
+  constructor() {
+    this.isActive = true
+    this.mixpanel = window.mixpanel
+    this.intercom = window.Intercom
+  }
 
-const isOpenDataAnalyst = () => window.sphinxConfig && window.sphinxConfig.openDataAnalyst
+  setState(
+    obj = {
+      isActive: true,
+      intercomID: '',
+      GAID: ''
+    }
+  ) {
+    this.isActive = obj.isActive
+    this.intercomID = obj.intercomID
 
-const dataAnalysts = {
-  regNewUser: (uid, name = '', email = '', phone = '') => {
-    if (!isOpenDataAnalyst()) return
+    window[`ga-disable-${obj.GAID}`] = !this.isActive
+  }
 
-    mixpanel.alias(uid)
+  regNewUser(uid, name = '', email = '', phone = '') {
+    if (!this.isActive) return
 
-    mixpanel.people.set({
+    this.mixpanel.alias(uid)
+
+    this.mixpanel.people.set({
       Uid: uid,
       $email: email,
       $name: name,
@@ -17,60 +31,60 @@ const dataAnalysts = {
       Phone: phone
     })
 
-    mixpanel.identify(uid)
+    this.mixpanel.identify(uid)
 
-    mixpanel.register({
+    this.mixpanel.register({
       uid,
       email
     })
 
-    intercom('boot', {
-      app_id: 'poh1d9m6',
+    this.intercom('boot', {
+      app_id: this.intercomID,
       name,
       email,
       user_id: uid,
       phone
     })
 
-    intercom('trackEvent', 'reg')
-  },
+    this.intercom('trackEvent', 'reg')
+  }
 
-  loginUser: (uid, email = '', phone = '') => {
-    if (!isOpenDataAnalyst()) return
+  loginUser(uid, email = '', phone = '') {
+    if (!this.isActive) return
 
-    mixpanel.identify(uid)
+    this.mixpanel.identify(uid)
 
-    mixpanel.register({
+    this.mixpanel.register({
       uid,
       email,
       phone
     })
 
-    intercom('boot', {
-      app_id: 'poh1d9m6',
+    this.intercom('boot', {
+      app_id: this.intercomID,
       email,
       user_id: uid,
       phone
     })
 
-    intercom('trackEvent', 'login')
-  },
+    this.intercom('trackEvent', 'login')
+  }
 
-  trackEvent: (eventStr, propertyObj = {}, isSendAll = false) => {
-    if (!isOpenDataAnalyst()) return
+  trackEvent(eventStr, propertyObj = {}, isSendAll = false) {
+    if (!this.isActive) return
 
-    mixpanel.track(eventStr, propertyObj)
+    this.mixpanel.track(eventStr, propertyObj)
 
     if (isSendAll) {
-      intercom('trackEvent', eventStr, propertyObj)
+      this.intercom('trackEvent', eventStr, propertyObj)
     }
-  },
+  }
 
-  trackLink: (tagIdStr, eventStr, propertyObj = {}) => {
-    if (!isOpenDataAnalyst()) return
+  trackLink(tagIdStr, eventStr, propertyObj = {}) {
+    if (!this.isActive) return
 
-    mixpanel.track_links(tagIdStr, eventStr, propertyObj)
+    this.mixpanel.track_links(tagIdStr, eventStr, propertyObj)
   }
 }
 
-export default dataAnalysts
+export default new DataAnalysts()
