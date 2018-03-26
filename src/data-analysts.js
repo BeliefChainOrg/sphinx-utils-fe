@@ -3,72 +3,75 @@ const intercom = window.intercom
 
 const isOpenDataAnalyst = () => window.sphinxConfig && window.sphinxConfig.openDataAnalyst
 
-export const regNewUser = (uid, name, email, phone) => {
-  if (!isOpenDataAnalyst) return
+const dataAnalysts = {
+  regNewUser: (uid, name, email, phone) => {
+    if (!isOpenDataAnalyst) return
 
-  mixpanel.alias(uid)
+    mixpanel.alias(uid)
 
-  mixpanel.people.set({
-    Uid: uid,
-    $email: email,
-    $name: name,
-    $phone: phone,
-    Phone: this.props.email
-  })
+    mixpanel.people.set({
+      Uid: uid,
+      $email: email,
+      $name: name,
+      $phone: phone,
+      Phone: this.props.email
+    })
 
-  mixpanel.identify(uid)
+    mixpanel.identify(uid)
 
-  mixpanel.register({
-    uid,
-    email: this.props.email
-  })
+    mixpanel.register({
+      uid,
+      email: this.props.email
+    })
 
-  intercom('boot', {
-    app_id: `poh1d9m6`,
-    name: this.nickname,
-    email: this.props.email,
-    user_id: uid,
-    phone
-  })
+    intercom('boot', {
+      app_id: `poh1d9m6`,
+      name: this.nickname,
+      email: this.props.email,
+      user_id: uid,
+      phone
+    })
 
-  intercom('trackEvent', 'reg')
-}
+    intercom('trackEvent', 'reg')
+  },
 
-export const loginUser = (uid, name, email, phone) => {
-  if (!isOpenDataAnalyst) return
+  loginUser: (uid, name, email, phone) => {
+    if (!isOpenDataAnalyst) return
 
-  mixpanel.identify(uid)
+    mixpanel.identify(uid)
 
-  mixpanel.register({
-    uid,
-    email: email
-  })
+    mixpanel.register({
+      uid,
+      email: email
+    })
 
-  intercom('boot', {
-    app_id: `poh1d9m6`,
-    email,
-    user_id: uid,
-    phone
-  })
+    intercom('boot', {
+      app_id: `poh1d9m6`,
+      email,
+      user_id: uid,
+      phone
+    })
 
-  intercom('trackEvent', 'login')
-}
+    intercom('trackEvent', 'login')
+  },
 
-export const trackEvent = (eventStr, propertyObj, isSendAll) => {
-  if (!isOpenDataAnalyst) return
+  trackEvent: (eventStr, propertyObj, isSendAll) => {
+    if (!isOpenDataAnalyst) return
 
-  const sendObj = propertyObj || {}
+    const sendObj = propertyObj || {}
 
-  mixpanel.track(eventStr, sendObj)
+    mixpanel.track(eventStr, sendObj)
 
-  if (isSendAll) {
-    intercom('trackEvent', eventStr, sendObj)
+    if (isSendAll) {
+      intercom('trackEvent', eventStr, sendObj)
+    }
+  },
+
+  trackLink: (tagIdStr, eventStr, propertyObj) => {
+    if (!isOpenDataAnalyst) return
+
+    mixpanel.track_links(tagIdStr, eventStr, propertyObj || {})
   }
 }
 
-// NOTE: the tagIdStr's format is '#blog-link a'. More please search mixpanel's help center.
-export const trackLink = (tagIdStr, eventStr, propertyObj) => {
-  if (!isOpenDataAnalyst) return
-
-  mixpanel.track_links(tagIdStr, eventStr, propertyObj || {})
-}
+export default dataAnalysts

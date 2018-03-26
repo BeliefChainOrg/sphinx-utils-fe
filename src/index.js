@@ -1,3 +1,3 @@
 import dataAnalysts from './data-analysts'
 
-export {dataAnalysts}
+export default {dataAnalysts}
