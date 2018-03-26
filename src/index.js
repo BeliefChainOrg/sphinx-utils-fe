@@ -1,2 +1,3 @@
+import dataAnalysts from './data-analysts'
 
-module.exports = {}
+export {dataAnalysts}

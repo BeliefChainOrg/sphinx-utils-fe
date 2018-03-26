@@ -1,8 +1,8 @@
 {
   "name": "sphinx-utils-fe",
   "version": "0.0.1",
-  "description": "sphinx js utils for frontend.",
-  "main": "index.js",
+  "description": "Sphinx js utils for frontend.",
+  "main": "src/index.js",
   "repository": "https://github.com/BeliefChainOrg/sphinx-utils-fe.git",
   "author": "lisuyong <lisuyong@beliefchain.com>",
   "license": "GPL-3.0",
