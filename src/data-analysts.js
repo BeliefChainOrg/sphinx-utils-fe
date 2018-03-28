@@ -1,8 +1,6 @@
 class DataAnalysts {
   constructor() {
     this.isActive = true
-    this.mixpanel = window.mixpanel
-    this.intercom = window.Intercom
   }
 
   setState(
@@ -21,9 +19,9 @@ class DataAnalysts {
   regNewUser(uid, name = '', email = '', phone = '') {
     if (!this.isActive) return
 
-    this.mixpanel.alias(uid)
+    window.mixpanel.alias(uid)
 
-    this.mixpanel.people.set({
+    window.mixpanel.people.set({
       Uid: uid,
       $email: email,
       $name: name,
@@ -31,14 +29,14 @@ class DataAnalysts {
       Phone: phone
     })
 
-    this.mixpanel.identify(uid)
+    window.mixpanel.identify(uid)
 
-    this.mixpanel.register({
+    window.mixpanel.register({
       uid,
       email
     })
 
-    this.intercom('boot', {
+    window.Intercom('boot', {
       app_id: this.intercomID,
       name,
       email,
@@ -46,44 +44,44 @@ class DataAnalysts {
       phone
     })
 
-    this.intercom('trackEvent', 'reg')
+    window.Intercom('trackEvent', 'reg')
   }
 
   loginUser(uid, email = '', phone = '') {
     if (!this.isActive) return
 
-    this.mixpanel.identify(uid)
+    window.mixpanel.identify(uid)
 
-    this.mixpanel.register({
+    window.mixpanel.register({
       uid,
       email,
       phone
     })
 
-    this.intercom('boot', {
+    window.Intercom('boot', {
       app_id: this.intercomID,
       email,
       user_id: uid,
       phone
     })
 
-    this.intercom('trackEvent', 'login')
+    window.Intercom('trackEvent', 'login')
   }
 
   trackEvent(eventStr, propertyObj = {}, isSendAll = false) {
     if (!this.isActive) return
 
-    this.mixpanel.track(eventStr, propertyObj)
+    window.mixpanel.track(eventStr, propertyObj)
 
     if (isSendAll) {
-      this.intercom('trackEvent', eventStr, propertyObj)
+      window.Intercom('trackEvent', eventStr, propertyObj)
     }
   }
 
   trackLink(tagIdStr, eventStr, propertyObj = {}) {
     if (!this.isActive) return
 
-    this.mixpanel.track_links(tagIdStr, eventStr, propertyObj)
+    window.mixpanel.track_links(tagIdStr, eventStr, propertyObj)
   }
 }
 
