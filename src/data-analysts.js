@@ -33,21 +33,23 @@ class DataAnalysts {
 
     window.mixpanel.register({
       uid,
-      email
+      email,
+      name,
+      phone
     })
 
     window.Intercom('boot', {
       app_id: this.intercomID,
+      user_id: uid,
       name,
       email,
-      user_id: uid,
       phone
     })
 
     window.Intercom('trackEvent', 'reg')
   }
 
-  loginUser(uid, email = '', phone = '') {
+  loginUser(uid, name = '', email = '', phone = '') {
     if (!this.isActive) return
 
     window.mixpanel.identify(uid)
@@ -55,13 +57,15 @@ class DataAnalysts {
     window.mixpanel.register({
       uid,
       email,
+      name,
       phone
     })
 
     window.Intercom('boot', {
       app_id: this.intercomID,
-      email,
       user_id: uid,
+      email,
+      name,
       phone
     })
 
