@@ -47,6 +47,8 @@ class DataAnalysts {
     })
 
     window.Intercom('trackEvent', 'reg')
+
+    gtag('set', {user_id: uid})
   }
 
   loginUser(uid, name = '', email = '', phone = '') {
@@ -87,6 +89,8 @@ class DataAnalysts {
     }
 
     window.Intercom('trackEvent', 'login')
+
+    gtag('set', {user_id: uid})
   }
 
   trackEvent(eventStr, propertyObj = {}, isSendAll = false) {
