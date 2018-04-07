@@ -96,11 +96,12 @@ class DataAnalysts {
   trackEvent(eventStr, propertyObj = {}, isSendAll = false) {
     if (!this.isActive) return
 
-    window.mixpanel.track(eventStr, propertyObj)
-
+    // NOTE: Do not put this block after mixpanel.track, as it'll change the value of propertyObj. So terrible.
     if (isSendAll) {
       window.Intercom('trackEvent', eventStr, propertyObj)
     }
+
+    window.mixpanel.track(eventStr, propertyObj)
   }
 
   trackLink(tagIdStr, eventStr, propertyObj = {}) {
