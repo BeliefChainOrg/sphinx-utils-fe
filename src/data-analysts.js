@@ -109,6 +109,12 @@ class DataAnalysts {
 
     window.mixpanel.track_links(tagIdStr, eventStr, propertyObj)
   }
+
+  trackCharge(value) {
+    if (!this.isActive || !value) return
+
+    window.mixpanel.people.track_charge(value)
+  }
 }
 
 export default new DataAnalysts()
