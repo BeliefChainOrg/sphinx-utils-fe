@@ -1,3 +1,5 @@
+import LogRocket from 'logrocket'
+
 class DataAnalysts {
   constructor() {
     this.isActive = true
@@ -14,6 +16,10 @@ class DataAnalysts {
     this.intercomID = obj.intercomID
 
     window[`ga-disable-${obj.GAID}`] = !this.isActive
+
+    if (this.isActive) {
+      LogRocket.init('oe8tam/sphinxchain')
+    }
   }
 
   regNewUser(uid, name = '', email = '', phone = '') {
