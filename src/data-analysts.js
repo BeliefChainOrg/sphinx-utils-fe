@@ -96,7 +96,24 @@ class DataAnalysts {
 
     window.Intercom('trackEvent', 'login')
 
+    window.Intercom('update', {
+      user_id: uid,
+      logrocketURL: `https://app.logrocket.com/oe8tam/sphinxchain/sessions?u=${uid}`
+    })
+
     gtag('set', {user_id: uid})
+
+    LogRocket.getSessionURL((sessionURL) => {
+      window.mixpanel.register({
+        logRocketSessionURL: sessionURL
+      })
+    })
+
+    LogRocket.identify(uid, {
+      name,
+      email,
+      subscriptionType: 'MVP'
+    })
   }
 
   trackEvent(eventStr, propertyObj = {}, isSendAll = false) {
