@@ -19,6 +19,12 @@ class DataAnalysts {
 
     if (this.isActive) {
       LogRocket.init('oe8tam/sphinxchain')
+
+      LogRocket.getSessionURL((sessionURL) => {
+        window.mixpanel.register({
+          logRocketSessionURL: sessionURL
+        })
+      })
     }
   }
 
@@ -102,12 +108,6 @@ class DataAnalysts {
     })
 
     gtag('set', {user_id: uid})
-
-    LogRocket.getSessionURL((sessionURL) => {
-      window.mixpanel.register({
-        logRocketSessionURL: sessionURL
-      })
-    })
 
     LogRocket.identify(uid, {
       name,
