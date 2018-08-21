@@ -58,7 +58,9 @@ class DataAnalysts {
       phone
     })
 
-    window.Intercom('trackEvent', 'reg')
+    const regEvent = 'reg'
+    window.mixpanel.track(regEvent)
+    window.Intercom('trackEvent', regEvent)
 
     gtag('set', {user_id: uid})
   }
