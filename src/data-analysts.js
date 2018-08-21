@@ -118,7 +118,7 @@ class DataAnalysts {
     })
   }
 
-  trackEvent(eventStr, propertyObj = {}, isSendAll = true) {
+  trackEvent(eventStr, propertyObj = {}, isSendAll = false) {
     if (!this.isActive) return
 
     // NOTE: Do not put this block after mixpanel.track, as it'll change the value of propertyObj. So terrible.
